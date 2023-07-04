@@ -1,0 +1,6 @@
+python-telegram-bot==20.3
+python-decouple==3.8
+pymongo==4.4.0
+redis==4.6.0
+websocket-client==1.6.1
+requests==2.31.0

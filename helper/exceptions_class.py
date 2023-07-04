@@ -1,0 +1,2 @@
+class ReRunSocketException(Exception):
+    pass

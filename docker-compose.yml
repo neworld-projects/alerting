@@ -1,0 +1,51 @@
+version: "3.3"
+
+x-container-config:
+  &configs
+  image: alerting:latest
+  build: .
+  volumes:
+    - ./prod.env:/usr/src/app/.env
+  restart: always
+  networks:
+    - net
+  depends_on:
+    - redis_db
+    - mongo_db
+
+services:
+
+  mongo_db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=Password
+    volumes:
+      - ./.mongo-db:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - net
+    restart: always
+
+  redis_db:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./.redis-data:/data
+    networks:
+      - net
+    restart: always
+
+  telegram:
+    <<: *configs
+    hostname: telegram
+
+  tradingview:
+    <<: *configs
+    hostname: tradingview
+
+networks:
+  net:
+    driver: bridge

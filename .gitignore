@@ -1,0 +1,7 @@
+venv
+.mongo-db
+.redis-data
+prod.env
+.env
+.idea
+__pycache__
