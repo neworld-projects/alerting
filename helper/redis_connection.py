@@ -13,7 +13,7 @@ class RedisConnection(Redis):
             return json.loads(result)
         return result
 
-    def set(self, name, value, ex: None | int | timedelta = None, px: None | int | timedelta = None, nx: bool = False,
+    def set(self, name, value, ex: None | int | timedelta = -1, px: None | int | timedelta = None, nx: bool = False,
             xx: bool = False, keepttl: bool = False, data_type=None):
         if data_type == 'json':
             value = json.dumps(value)

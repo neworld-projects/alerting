@@ -69,6 +69,7 @@ def main():
         WebSocketConnectionChart()
     except ReRunSocketException:
         sleep(30)
+        logging.info("rerun")
         exit(1)
 
 
