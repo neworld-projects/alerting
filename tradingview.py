@@ -70,7 +70,7 @@ def main():
             WebSocketConnectionChart()
         except ReRunSocketException:
             sleep(30)
-            print("rerun")
+            logging.info("rerun")
 
 
 if __name__ == '__main__':
