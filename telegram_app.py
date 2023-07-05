@@ -5,7 +5,7 @@ from telegram.ext import CommandHandler, ApplicationBuilder, ContextTypes
 
 from DTOs import Alert
 from helper.redis_connection import coins_for_call_tradingview, alert_data_cache
-from mongo.insert import not_exist_insert_alert_mongo
+from mongo.insert import not_exist_insert_alert_mongo, update_status_false, update_alert_mongo_with_data
 from mongo.select import get_alert_mongo, get_symbols_mongo, get_alerts_mongo
 from settings import telegram_token
 
@@ -40,6 +40,23 @@ async def get_alert(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         message = f"you have <b>not</b> alert on <b>{set_alert_data.value}</b> for <b>{set_alert_data.coin_id}</b>"
     else:
         message = f"you have one alert on <b>{set_alert_data.value}</b> for <b>{set_alert_data.coin_id}</b>"
+
+    await update.message.reply_text(message, parse_mode='HTML')
+
+
+async def delete_alert(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    set_alert_data = Alert(
+        coin_id=context.args[0].upper(),
+        value=float(context.args[1]),
+        chat_id=update.effective_chat.id
+    )
+
+    alert_data = update_alert_mongo_with_data(set_alert_data)
+
+    if not alert_data:
+        message = f"you have <b>not</b> alert on <b>{set_alert_data.value}</b> for <b>{set_alert_data.coin_id}</b>"
+    else:
+        message = f"your alert deleted on <b>{set_alert_data.value}</b> for <b>{set_alert_data.coin_id}</b>"
 
     await update.message.reply_text(message, parse_mode='HTML')
 
@@ -84,6 +101,7 @@ def main():
     app.add_handler(CommandHandler("set_alert", set_alert))
     app.add_handler(CommandHandler("get_alert", get_alert))
     app.add_handler(CommandHandler("get_all_alerts", get_all_alerts))
+    app.add_handler(CommandHandler("delete_alert", delete_alert))
 
     app.run_polling()
 

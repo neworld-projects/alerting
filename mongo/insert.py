@@ -14,3 +14,8 @@ def not_exist_insert_alert_mongo(alert_data: Alert):
 
 def update_status_false(instance_id: str):
     db.alerts.update_one({'_id': ObjectId(instance_id)}, {'$set': {'status': False}})
+
+
+def update_alert_mongo_with_data(alert_data: Alert):
+    result = db.alerts.update_one(alert_data.__dict__, {'$set': {'status': False}})
+    return result
