@@ -13,11 +13,11 @@ class RedisConnection(Redis):
             return json.loads(result)
         return result
 
-    def set(self, name, value, ex: None | int | timedelta = -1, px: None | int | timedelta = None, nx: bool = False,
+    def set(self, name, value, ex: None | int | timedelta = None, px: None | int | timedelta = None, nx: bool = False,
             xx: bool = False, keepttl: bool = False, data_type=None):
         if data_type == 'json':
             value = json.dumps(value)
-        return super(RedisConnection, self).set(name, value, ex, px, nx, xx, keepttl)
+        return super(RedisConnection, self).set(name, value, ex if ex else -1, px, nx, xx, keepttl)
 
 
 alert_data_cache = RedisConnection(host=redis_config.get('host'), port=redis_config.get('port'), db=0)
