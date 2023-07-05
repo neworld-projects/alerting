@@ -52,6 +52,7 @@ async def delete_alert(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     )
 
     alert_data = update_alert_mongo_with_data(set_alert_data)
+    sync_mongo_and_redis()
 
     if not alert_data:
         message = f"you have <b>not</b> alert on <b>{set_alert_data.value}</b> for <b>{set_alert_data.coin_id}</b>"
