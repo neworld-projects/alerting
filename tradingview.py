@@ -1,6 +1,5 @@
 import asyncio
 import logging
-from time import sleep
 
 from DTOs import TradingViewData, Alert
 from helper.exceptions_class import ReRunSocketException
@@ -64,12 +63,13 @@ class WebSocketConnectionChart(OpenWebsocketConnection):
 
 
 def main():
-    while True:
-        try:
-            WebSocketConnectionChart()
-        except ReRunSocketException:
-            sleep(30)
-            logging.info("rerun")
+    # while True:
+    #     try:
+    logging.info("start app")
+    WebSocketConnectionChart()
+    # except ReRunSocketException:
+    #     sleep(30)
+    #     logging.info("rerun")
 
 
 if __name__ == '__main__':
