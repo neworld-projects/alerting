@@ -35,7 +35,7 @@ class WebSocketConnectionChart(OpenWebsocketConnection):
         alerts = alert_data_cache.get('alerts', data_type='json')
         for alert in alerts:
             logging.info(f'coin: {data.__dict__}, {coin_name}')
-            if alert.get('coin_id') == coin_name and data.high > alert.get('value') > data.low:
+            if alert.get('coin_id') == coin_name and data.high >= alert.get('value') >= data.low:
                 logging.info(f'valid alert: {alert}')
                 asyncio.run(
                     send_message_telegram(Alert(alert.get('coin_id'), alert.get('value'), alert.get('chat_id')))
