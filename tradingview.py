@@ -17,6 +17,7 @@ class WebSocketConnectionChart(OpenWebsocketConnection):
     def __init__(self):
         symbols = coins_for_call_tradingview.get('symbols', data_type='json')
         if not symbols:
+            logging.info("can not get data from redis")
             raise ReRunSocketException
         super(WebSocketConnectionChart, self).__init__(
             symbols,
@@ -33,9 +34,7 @@ class WebSocketConnectionChart(OpenWebsocketConnection):
     @staticmethod
     def check_alert(data: TradingViewData, coin_name: str):
         alerts = alert_data_cache.get('alerts', data_type='json')
-        logging.info(f'{alerts}, {coin_name}')
         for alert in alerts:
-            logging.info(f'coin: {data.__dict__}, {coin_name}')
             if alert.get('coin_id') == coin_name and data.high >= alert.get('value') >= data.low:
                 logging.info(f'valid alert: {alert}')
                 asyncio.run(
