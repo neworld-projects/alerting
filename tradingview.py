@@ -9,6 +9,8 @@ from mongo.insert import update_status_false
 from telegram_app import send_message_telegram, sync_mongo_and_redis
 from tradingview_socket.websocket import OpenWebsocketConnection
 
+logging.basicConfig(level=logging.INFO)
+
 
 class WebSocketConnectionChart(OpenWebsocketConnection):
 
@@ -32,8 +34,9 @@ class WebSocketConnectionChart(OpenWebsocketConnection):
     def check_alert(data: TradingViewData, coin_name: str):
         alerts = alert_data_cache.get('alerts', data_type='json')
         for alert in alerts:
+            logging.info(f'coin: {data.__dict__}, {coin_name}')
             if alert.get('coin_id') == coin_name and data.high > alert.get('value') > data.low:
-                print(f'valid alert: {alert}')
+                logging.info(f'valid alert: {alert}')
                 asyncio.run(
                     send_message_telegram(Alert(alert.get('coin_id'), alert.get('value'), alert.get('chat_id')))
                 )
