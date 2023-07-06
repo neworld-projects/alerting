@@ -9,7 +9,7 @@ from mongo.insert import update_status_false
 from telegram_app import send_message_telegram, sync_mongo_and_redis
 from tradingview_socket.websocket import OpenWebsocketConnection
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(name)s - %(levelname)s - %(message)s - %(asctime)s')
 
 
 class WebSocketConnectionChart(OpenWebsocketConnection):
