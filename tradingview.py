@@ -18,6 +18,7 @@ class WebSocketConnectionChart(OpenWebsocketConnection):
         symbols = coins_for_call_tradingview.get('symbols', data_type='json')
         if not symbols:
             logging.info("can not get data from redis")
+            sync_mongo_and_redis()
             raise ReRunSocketException
         super(WebSocketConnectionChart, self).__init__(
             symbols,
