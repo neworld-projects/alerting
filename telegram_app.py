@@ -65,7 +65,7 @@ async def delete_alert(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 async def get_all_alerts(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     alerts = get_alerts_mongo()
     beautify_alerts = "\n".join(
-        [f'{index}. {alert.get("coin_id")}: {alert.get("value")}' for index, alert in enumerate(alerts[1:], start=1)]
+        [f'{index}. {alert.get("coin_id")} {alert.get("value")}' for index, alert in enumerate(alerts[1:], start=1)]
     )
     message = f"all alerts:\n{beautify_alerts}"
 

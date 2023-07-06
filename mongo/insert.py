@@ -1,6 +1,7 @@
 from bson import ObjectId
 
 from DTOs import Alert
+from mongo.select import get_alert_mongo
 from settings import db
 
 
@@ -17,5 +18,8 @@ def update_status_false(instance_id: str):
 
 
 def update_alert_mongo_with_data(alert_data: Alert):
+    result = get_alert_mongo(alert_data)
+    if not result:
+        return
     result = db.alerts.update_one(alert_data.__dict__, {'$set': {'status': False}})
     return result
